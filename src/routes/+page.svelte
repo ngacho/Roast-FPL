@@ -4,7 +4,7 @@
 	let loading = false;
 	let error = false;
 
-	let inputText = 'one';
+	let inputText = '';
 
 	let answer = '';
 
@@ -54,27 +54,51 @@
 	};
 </script>
 
-<h1 class="text-5xl text-center py-6 mb-10">Say hello to Garbis👋</h1>
+<h1 class="text-5xl text-center py-6 mb-10">Roast my FPL</h1>
 
 <div class="flex justify-center">
-	<form class="flex flex-col w-[520px] shrink" on:submit|preventDefault={handleSubmit}>
-		<label class="pb-2" for="userInput">Write your text here:</label>
-		<textarea class="h-48 resize-none rounded-md" name="userInput" bind:value={inputText} />
-
-		{#if !loading}
-			<button class="btn btn-primary mt-4">proompt</button>
-		{/if}
-
-		{#if loading}
-			<button class="btn btn-primary mt-4" disabled
-				>GENERATING <span class="spinner">⚡</span></button
-			>
-		{/if}
-		<div class="mt-4">
-			<h2>Answer:</h2>
-			{#if answer}
-				<p>{answer}</p>
-			{/if}
+	<div class="flex flex-col">
+		<div class="m-4 mx-auto max-w-lg">
+			<form class="w-full max-w-sm bg-white p-6 shadow-lg rounded-lg" on:submit|preventDefault={handleSubmit}>
+				<label for="fpl-id" class="block mb-4 text-sm font-medium text-gray-700 text-center">
+				  Don't be shy, enter your FPL ID
+				</label>
+				<div class="flex items-center border-b border-teal-500 py-1.5">
+				  <input
+					name="fplID"
+					id="fpl-id"
+					class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
+					type="text"
+					placeholder="FPL ID"
+					aria-label="FPL ID"
+					bind:value={inputText}
+				  />
+				  {#if !loading} 
+				  <button
+					class="flex-shrink-0 bg-teal-500 disabled:bg-teal-300 disabled:border-teal-300 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-black py-1 px-2 rounded"
+					type="submit"
+					disabled={!inputText || inputText.length < 1 || isNaN(parseInt(inputText, 10))}
+				  >
+					Get Roasted
+				  </button>
+				  {/if}
+				  {#if loading}
+				  <button
+					class="flex-shrink-0 bg-teal-500 disabled:bg-teal-300 hover:bg-teal-700 text-sm text-black py-1 px-2 rounded"
+					disabled
+						>Roasting <span class="spinner">⚡</span></button
+					>
+				  {/if}
+				  
+				</div>
+			  </form>
 		</div>
-	</form>
+		<div class="m-4 max-w-md mx-auto">
+		   {#if answer}
+			   <p>{answer}</p>
+		   {/if}
+	   </div>
+		
+	</div>
+
 </div>
