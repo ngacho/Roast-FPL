@@ -1,7 +1,29 @@
 import type { RequestHandler } from './$types';
 import { OPENAI_API_KEY } from '$env/static/private';
-import { OpenAI } from 'openai';
+import { OpenAI, OpenAIError } from 'openai';
 import { error, json } from '@sveltejs/kit';
+
+function notifyError(errorText : string) {
+    const options = {
+      method: "POST",
+      body: errorText,
+      headers: {
+        "Title": "Error in Roast FPL!",
+        "Priority": "5",
+        "Tags": "warning",
+      }
+    };
+  
+    fetch("https://ntfy.sh/roast-fpl-err-xQ743w0mjudkztU0", options)
+      .then(response => {
+        if (!response.ok) {
+          console.log("Error in sending notification to ntfy.sh");
+        }
+        return response.text();
+      })
+      .then(data => console.log(data))
+      .catch(error => console.error("There was a problem with the fetch operation:", error));
+  }
 
 async function getGameInfo() {
     const url = 'https://fantasy.premierleague.com/api/bootstrap-static/';
@@ -191,8 +213,8 @@ export const POST: RequestHandler = async ({ request }) => {
         });
 
         return new Response(stream, { headers });
-
-    } catch (err) {
+    }catch (err) {
+        notifyError(JSON.stringify(err));
         throw error(500, 'Failed to fetch data.');
     }
 };
