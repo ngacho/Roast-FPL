@@ -54,7 +54,7 @@
 	};
 </script>
 
-<h1 class="text-5xl text-center py-6 mb-10">Roast my FPL</h1>
+<h1 class="text-5xl text-center py-6 mb-10">Roast my FPL ⚽︎</h1>
 
 <div class="flex justify-center">
 	<div class="flex flex-col">

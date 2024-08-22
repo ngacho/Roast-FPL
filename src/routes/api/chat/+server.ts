@@ -155,6 +155,9 @@ export const POST: RequestHandler = async ({ request }) => {
         
         const teamPerformance = await getTeamGwPerformance(fplId.toString());
         const prompt = `You are a roast master, your task is to roast an individual manager's fantasy premier league team depending on the data provided. You will be given a name, % selected by, and total points scored by that player. Emphasise on roasting the wankness of the individual manager that selected the team. Here's the team ${JSON.stringify(teamPerformance)}`
+        if (!teamPerformance) {
+            throw error(404, 'Team not found.');
+        }
 
         const completionResponse = await openai.chat.completions.create({
             messages: [
