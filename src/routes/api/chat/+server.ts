@@ -3,9 +3,6 @@ import { OPENAI_API_KEY } from '$env/static/private';
 import { OpenAI } from 'openai';
 import { error } from '@sveltejs/kit';
 
-export const config = {
-	runtime: 'edge'
-};
 
 function notifyError(errorText: string) {
 	const options = {
