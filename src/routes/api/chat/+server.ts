@@ -213,10 +213,12 @@ export const POST: RequestHandler = async ({ request }) => {
 			Connection: 'keep-alive'
 		};
 
+        const textEncoder = new TextEncoder();
+
 		const stream = new ReadableStream({
 			async start(controller) {
 				for await (const chunk of completionResponse) {
-					controller.enqueue(`data: ${JSON.stringify(chunk)}\n\n`);
+					controller.enqueue(textEncoder.encode(`data: ${JSON.stringify(chunk)}\n\n`));
 				}
 				controller.close();
 			}
