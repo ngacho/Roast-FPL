@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
 import { OPENAI_API_KEY } from '$env/static/private';
-import { OpenAI, OpenAIError } from 'openai';
-import { error, json } from '@sveltejs/kit';
+import { OpenAI } from 'openai';
+import { error } from '@sveltejs/kit';
 
 function notifyError(errorText : string) {
     const options = {
@@ -161,7 +161,7 @@ export const POST: RequestHandler = async ({ request }) => {
         requestData = await request.json();
     } catch (err) {
         console.error('Error parsing request body:', err);
-        throw error(400, 'Invalid JSON in request body.');
+        error(400, 'Invalid JSON in request body.');
     }
 
     try {
@@ -171,14 +171,14 @@ export const POST: RequestHandler = async ({ request }) => {
         // convert fplid to a number
         var fplId = parseInt(inputText, 10);
         if (isNaN(fplId)) {
-            throw error(400, 'Invalid input. Please provide a valid FPL ID.');
+            error(400, 'Invalid input. Please provide a valid FPL ID.');
         }
 
         
         const teamPerformance = await getTeamGwPerformance(fplId.toString());
         const prompt = `You are a roast master, your task is to roast an individual manager's fantasy premier league team depending on the data provided. You will be given a name, % selected by, and total points scored by that player. Emphasise on roasting the wankness of the individual manager that selected the team. Here's the team ${JSON.stringify(teamPerformance)}`
         if (!teamPerformance) {
-            throw error(404, 'Team not found.');
+            error(404, 'Team not found.');
         }
 
         const completionResponse = await openai.chat.completions.create({
@@ -215,6 +215,6 @@ export const POST: RequestHandler = async ({ request }) => {
         return new Response(stream, { headers });
     }catch (err) {
         notifyError(JSON.stringify(err));
-        throw error(500, 'Failed to fetch data.');
+        error(500, 'Failed to fetch data.');
     }
 };
