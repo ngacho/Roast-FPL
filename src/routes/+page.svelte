@@ -54,7 +54,8 @@
 	};
 </script>
 
-<h1 class="text-5xl text-center py-6 mb-10">Roast my FPL ⚽︎</h1>
+<h1 class="text-5xl text-center py-1 mt-4">Roast my FPL ⚽︎</h1>
+<h2 class="text-md text-center py-1 mb-10">Made with 😈 by <a  class="text-sm text-blue-600 dark:text-blue-500 hover:underline" href="https://ngacho.com">Ngacho</a></h2>
 
 <div class="flex justify-center">
 	<div class="flex flex-col">
