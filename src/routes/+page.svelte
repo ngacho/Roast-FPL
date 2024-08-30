@@ -62,7 +62,7 @@
 
 <div class="flex justify-center">
 	<div class="flex flex-col">
-		<div class="m-4 sm:m-4 mx-auto max-w-lg outline outline-red outline-1 p-4">
+		<div class="m-4 sm:m-4 mx-auto max-w-lg p-4">
 			<form class="w-full max-w-sm bg-white p-6 shadow-lg rounded-lg" on:submit|preventDefault={handleSubmit}>
 				<label for="fpl-id" class="block mb-4 text-sm font-medium text-gray-700 text-center">
 				  Don't be shy, enter your FPL ID
@@ -98,7 +98,7 @@
 			  </form>
 		</div>
 		<div class="m-4">
-			<div class="m-4 max-w-md mx-auto outline outline-1 outline-red-600 sm:p-4">
+			<div class="m-4 max-w-md mx-auto sm:p-4">
 				{#if answer}
 					<p class="sm:p-4">{answer}</p>
 				{/if}
