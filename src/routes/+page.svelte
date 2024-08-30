@@ -54,12 +54,15 @@
 	};
 </script>
 
-<h1 class="text-5xl text-center py-1 mt-4">Roast my FPL ⚽︎</h1>
-<h2 class="text-md text-center py-1 mb-10">Made with 😈 by <a  class="text-sm text-blue-600 dark:text-blue-500 hover:underline" href="https://ngacho.com">Ngacho</a></h2>
+<div class="sm:m-4">
+	<h1 class="text-5xl text-center py-1 mt-4">Roast my FPL ⚽︎</h1>
+	<h2 class="text-md text-center py-1 mb-10">Made with 😈 by <a  class="text-sm text-blue-600 dark:text-blue-500 hover:underline" href="https://ngacho.com">Ngacho</a></h2>
+</div>
+
 
 <div class="flex justify-center">
 	<div class="flex flex-col">
-		<div class="m-4 mx-auto max-w-lg">
+		<div class="m-4 sm:m-4 mx-auto max-w-lg outline outline-red outline-1 p-4">
 			<form class="w-full max-w-sm bg-white p-6 shadow-lg rounded-lg" on:submit|preventDefault={handleSubmit}>
 				<label for="fpl-id" class="block mb-4 text-sm font-medium text-gray-700 text-center">
 				  Don't be shy, enter your FPL ID
@@ -94,11 +97,15 @@
 				</div>
 			  </form>
 		</div>
-		<div class="m-4 max-w-md mx-auto">
-		   {#if answer}
-			   <p>{answer}</p>
-		   {/if}
-	   </div>
+		<div class="m-4">
+			<div class="m-4 max-w-md mx-auto outline outline-1 outline-red-600 sm:p-4">
+				{#if answer}
+					<p class="sm:p-4">{answer}</p>
+				{/if}
+			</div>
+
+		</div>
+		
 		
 	</div>
 
