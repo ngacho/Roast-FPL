@@ -201,7 +201,7 @@ export const POST: RequestHandler = async ({ request }) => {
 			temperature: 0.7,
 			max_tokens: 4000,
 			top_p: 0.8,
-			frequency_penalty: 0.6,
+			frequency_penalty: 0.4,
 			presence_penalty: 0.2,
 			model: 'gpt-3.5-turbo',
 			stream: true
