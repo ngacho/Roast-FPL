@@ -130,7 +130,7 @@ async function getTeamGwPerformance(teamId: string) {
 	const picks = updatePlayerNamesAndPositions(gwInfo.picks, elementsInfo);
 
 	// we want total points, highest points, overall rank
-	const totalPoints = gwInfo.entry_history.total_points;
+	const totalPoints = gwInfo.entry_history.points;
 	const percentile = gwInfo.entry_history.percentile_rank;
 	const highestPoints = gameInfo.events[gameweek - 1].highest_score;
 	const averagePoints = gameInfo.events[gameweek - 1].average_entry_score;
