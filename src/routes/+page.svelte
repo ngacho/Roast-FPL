@@ -1,6 +1,5 @@
 <script lang="ts">
 	import IconButton from '$lib/components/IconButton.svelte';
-	import html2canvas from "html2canvas";
 	import { SSE } from 'sse.js';
 
 	let loading = false;
@@ -80,7 +79,7 @@
     }
 
 
-	function drawCanvas(){
+	function captureResponse(){
 		let canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
 		let context = canvas.getContext("2d") as CanvasRenderingContext2D;
 		// Get the device pixel ratio, falling back to 1.
@@ -164,27 +163,6 @@ window.open(roastImage , "_blank");
 		
 	}
 
-	function captureResponse(){
-		const element = document.querySelector("#roast-response");
-		if(!answer || !element){
-			alert("No response to capture");
-			return;
-		}
-
-		const roastElement = element as HTMLElement;
-
-		html2canvas(roastElement).then(canvas => {
-			// Export the canvas to its data URI representation
-			var roastImage = canvas.toDataURL("image/png");
-
-			// Open the image in a new window
-			window.open(roastImage , "_blank");
-			
-		});
-		
-		
-	
-	}
 </script>
 
 <div class="sm:m-4">
@@ -238,16 +216,13 @@ window.open(roastImage , "_blank");
 						<p class="text-lg font-semibold">Share on:</p>
 					</div>
 					<div class="flex flex-col lg:flex-row lg:space-x-2">
-						<IconButton svgUrl="icons/whatsapp.svg" name="WhatsApp" bgColor="bg-[#128c7e]" additionalClasses="text-white flex-1" onClick={drawCanvas}/>
+						<IconButton svgUrl="icons/whatsapp.svg" name="WhatsApp" bgColor="bg-[#128c7e]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
 						<IconButton svgUrl="icons/twitter.svg" name="Twitter" bgColor="bg-[#1da1f2]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
 					</div>
+					<canvas hidden id="myCanvas" style="background-color:black">
+					</canvas>				
 				{/if}
-				<!-- <p id="roast-response">
-					Well, well, well, look at ExtraPressure over here thinking they can handle the heat of Fantasy Premier League. With a total of 68 points, it's safe to say that the pressure got to them real quick. Let's start with Henderson in goal, who's only managed to scrape together 1 point. Maybe he should stick to being a backup goalkeeper in real life too. Moving on to the defense, Hall and Gvardiol are clearly just there for decoration with their measly 1 and 2 points respectively. And Pedro Porro? More like Pedro Pooro with his underwhelming 6 points. In midfield, Nkunku and Elanga might as well not even be on the pitch with their lackluster performances. And don't even get me started on Diogo J. with his paltry 6 points. Salah is carrying this team on his back with 10 points, but even he can't make up for the disaster that is Isak and Muniz up front. Seriously, who thought selecting those two would be a good idea? And finally, we have Haaland as captain, racking up an impressive 34 points. But let's be real, even he can't save this sinking ship of a team. ExtraPressure indeed - looks like the only pressure they're feeling is the pressure of being dead last in their fantasy league.
-
-				</p> -->
-				<canvas hidden id="myCanvas" style="background-color:black">
-				</canvas>				
+				
 			</div>
 		</div>
 		
