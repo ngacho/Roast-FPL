@@ -209,21 +209,20 @@ window.open(roastImage , "_blank");
 			  </form>
 		</div>
 		<div class="mx-5">
+			{#if answer}
 			<div class="max-w-md mx-auto sm:p-4">
-				{#if answer}
-					<p id="roast-response" class="sm:p-4">{answer}</p>
-					<div class="text-center mb-2">
-						<p class="text-lg font-semibold">Share on:</p>
-					</div>
-					<div class="flex flex-col lg:flex-row lg:space-x-2">
-						<IconButton svgUrl="icons/whatsapp.svg" name="WhatsApp" bgColor="bg-[#128c7e]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
-						<IconButton svgUrl="icons/twitter.svg" name="Twitter" bgColor="bg-[#1da1f2]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
-					</div>
-					<canvas hidden id="myCanvas" style="background-color:black">
-					</canvas>				
-				{/if}
-				
+				<p id="roast-response" class="sm:p-4">{answer}</p>
 			</div>
+			<div class="text-center mb-2">
+				<p class="text-lg font-semibold">Share on:</p>
+			</div>
+			<div class="max-w-md flex flex-col lg:flex-row lg:space-x-2">
+				<IconButton svgUrl="icons/whatsapp.svg" name="WhatsApp" bgColor="bg-[#128c7e]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
+				<IconButton svgUrl="icons/twitter.svg" name="Twitter" bgColor="bg-[#1da1f2]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
+			</div>
+			<canvas hidden id="myCanvas" style="background-color:black">
+			</canvas>
+			{/if}
 		</div>
 		
 		
