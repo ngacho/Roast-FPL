@@ -265,12 +265,7 @@ const copyToClipboard = async () => {
 					<IconButton svgUrl="icons/share.svg" name="Share" bgColor="bg-teal-500" additionalClasses="text-white flex-1" onClick={handleWebShare}/>
 				</div>
 				{:else}
-				<div class="text-center mb-2">
-					<p class="text-lg font-semibold">Share on:</p>
-				</div>
 				<div class="max-w-md flex flex-col lg:flex-row lg:space-x-2">
-					<IconButton svgUrl="icons/whatsapp.svg" name="WhatsApp" bgColor="bg-[#128c7e]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
-					<IconButton svgUrl="icons/twitter.svg" name="Twitter" bgColor="bg-[#1da1f2]" additionalClasses="text-white flex-1" onClick={captureResponse}/>	
 					<IconButton svgUrl="icons/copy.svg" name="Copy" bgColor="bg-teal-500" additionalClasses="text-white flex-1" onClick={copyToClipboard}/>	
 				</div>
 				{/if}
