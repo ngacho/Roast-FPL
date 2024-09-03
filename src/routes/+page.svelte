@@ -1,5 +1,6 @@
 <script lang="ts">
 	import IconButton from '$lib/components/IconButton.svelte';
+	import IconButtonWithLoader from '$lib/components/IconButtonLoader.svelte';
 	import { SSE } from 'sse.js';
 	import { browser } from '$app/environment';
 
@@ -15,6 +16,8 @@
 	let answer = '';
 
 	$: handleWebShare;
+	$: isProcessing = false;
+	$: showConfirmation = false;
 
 
 	const handleSubmit = async () => {
@@ -197,6 +200,7 @@
 };
 
 const copyToClipboard = async () => {
+	isProcessing = true;
     const image = captureResponse();
 
     try {
@@ -205,8 +209,13 @@ const copyToClipboard = async () => {
         const item = new ClipboardItem({ "image/png": blob });
 
         await navigator.clipboard.write([item]);
+		showConfirmation = true;
+		setTimeout(() => {
+			isProcessing = false;	
+		}, 100);
     } catch (error) {
         console.log('Failed to copy image', error);
+		isProcessing = false;
     }
 };
 
@@ -266,13 +275,25 @@ const copyToClipboard = async () => {
 				</div>
 				{:else}
 				<div class="max-w-md flex flex-col lg:flex-row lg:space-x-2">
-					<IconButton svgUrl="icons/copy.svg" name="Copy" bgColor="bg-teal-500" additionalClasses="text-white flex-1" onClick={copyToClipboard}/>	
+					<!-- <IconButton svgUrl="icons/copy.svg" name="Copy" bgColor="bg-teal-500" additionalClasses="text-white flex-1" onClick={copyToClipboard}/>	
+					  -->
+					  <IconButtonWithLoader 
+					  svgUrl="icons/copy.svg" 
+					  name="Copy" 
+					  bgColor="bg-teal-500" 
+					  additionalClasses="text-white flex-1" 
+					  onClick={copyToClipboard} 
+					  processingStatus={isProcessing}
+					/>
 				</div>
 				{/if}
 			<canvas hidden id="myCanvas" style="background-color:black">
 			</canvas>
 			{/if}
 		</div>
+
+		
+
 		
 		
 	</div>
