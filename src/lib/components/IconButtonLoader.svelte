@@ -1,5 +1,6 @@
 <script lang="ts">
     export let svgUrl: string;
+    export let loadingSvgUrl: string;
     export let name: string;
     export let bgColor: string;
     export let additionalClasses: string = '';
@@ -8,43 +9,19 @@
     
   
   </script>
-  
-  <button
-    class={`flex items-center justify-center p-2 rounded ${bgColor} ${additionalClasses}`}
-    on:click={onClick}
-    disabled={processingStatus}
-  >
-    {#if processingStatus}
-      <svg
-        class="animate-spin h-5 w-5 text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          class="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
-        ></circle>
-        <path
-          class="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-        ></path>
-      </svg>
-    {:else}
-      <img src={svgUrl} alt={name} class="h-5 w-5" />
-      <span class="ml-2">{name}</span>
-    {/if}
-  </button>
-  
-  <style>
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-  </style>
-  
+
+<button
+type="button"
+class="mb-2 flex items-center justify-center rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg {bgColor} {additionalClasses}"
+on:click={onClick}>
+{#if !processingStatus}
+<span class="inline-flex items-center [&>img]:h-4 [&>img]:w-4 mr-2">
+  <img src="{svgUrl}" alt="{name} icon" />
+</span>
+{name}
+{:else}
+<span class="spinner">
+  <img width="16" src="{loadingSvgUrl}" alt="spinner" />
+</span>
+{/if}
+</button>

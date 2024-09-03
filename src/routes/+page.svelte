@@ -212,7 +212,7 @@ const copyToClipboard = async () => {
 		showConfirmation = true;
 		setTimeout(() => {
 			isProcessing = false;	
-		}, 100);
+		}, 150);
     } catch (error) {
         console.log('Failed to copy image', error);
 		isProcessing = false;
@@ -279,6 +279,7 @@ const copyToClipboard = async () => {
 					  -->
 					  <IconButtonWithLoader 
 					  svgUrl="icons/copy.svg" 
+					  loadingSvgUrl="icons/loading.svg"
 					  name="Copy" 
 					  bgColor="bg-teal-500" 
 					  additionalClasses="text-white flex-1" 
