@@ -196,6 +196,20 @@
     }
 };
 
+const copyToClipboard = async () => {
+    const image = captureResponse();
+
+    try {
+        const response = await fetch(image);
+        const blob = await response.blob();
+        const item = new ClipboardItem({ "image/png": blob });
+
+        await navigator.clipboard.write([item]);
+    } catch (error) {
+        console.log('Failed to copy image', error);
+    }
+};
+
 </script>
 
 <div class="sm:m-4">
@@ -257,6 +271,7 @@
 				<div class="max-w-md flex flex-col lg:flex-row lg:space-x-2">
 					<IconButton svgUrl="icons/whatsapp.svg" name="WhatsApp" bgColor="bg-[#128c7e]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
 					<IconButton svgUrl="icons/twitter.svg" name="Twitter" bgColor="bg-[#1da1f2]" additionalClasses="text-white flex-1" onClick={captureResponse}/>	
+					<IconButton svgUrl="icons/copy.svg" name="Copy" bgColor="bg-teal-500" additionalClasses="text-white flex-1" onClick={copyToClipboard}/>	
 				</div>
 				{/if}
 			<canvas hidden id="myCanvas" style="background-color:black">
