@@ -1,6 +1,11 @@
 <script lang="ts">
 	import IconButton from '$lib/components/IconButton.svelte';
 	import { SSE } from 'sse.js';
+	import { browser } from '$app/environment';
+
+	$: webShareAPISupported = browser && typeof navigator.share !== 'undefined';
+	const siteTitle = 'Roast MY FPL';
+    const siteUrl = 'https://roastmyfpl.com';
 
 	let loading = false;
 	let error = false;
@@ -8,6 +13,8 @@
 	let inputText = '';
 
 	let answer = '';
+
+	$: handleWebShare;
 
 
 	const handleSubmit = async () => {
@@ -157,11 +164,37 @@
 		// Export the canvas to its data URI representation
 		var roastImage = canvas.toDataURL("image/png");
 
-// Open the image in a new window
-window.open(roastImage , "_blank");
 
-		
+
+		return roastImage;
 	}
+
+	const handleWebShare = async () => {
+    const image = captureResponse();
+
+    try {
+        // Convert the data URI to a Blob
+        const response = await fetch(image);
+        const blob = await response.blob();
+
+        // Create a File from the Blob
+        const file = new File([blob], "roast.png", { type: "image/png" });
+
+        // Check if the Web Share API is supported
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                files: [file],
+                title: 'Roast My FPL',
+                text: 'Check out this roast from Roast My FPL ⚽︎',
+            });
+        } else {
+			webShareAPISupported = false;
+            console.log("File sharing on Web Share API is not supported");
+        }
+    } catch (error) {
+        console.log('Error sharing', error);
+    }
+};
 
 </script>
 
@@ -213,13 +246,19 @@ window.open(roastImage , "_blank");
 			<div class="max-w-md mx-auto sm:p-4">
 				<p id="roast-response" class="sm:p-4">{answer}</p>
 			</div>
-			<div class="text-center mb-2">
-				<p class="text-lg font-semibold">Share on:</p>
-			</div>
-			<div class="max-w-md flex flex-col lg:flex-row lg:space-x-2">
-				<IconButton svgUrl="icons/whatsapp.svg" name="WhatsApp" bgColor="bg-[#128c7e]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
-				<IconButton svgUrl="icons/twitter.svg" name="Twitter" bgColor="bg-[#1da1f2]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
-			</div>
+				{#if webShareAPISupported}
+				<div class="max-w-md flex flex-col lg:flex-row">
+					<IconButton svgUrl="icons/share.svg" name="Share" bgColor="bg-teal-500" additionalClasses="text-white flex-1" onClick={handleWebShare}/>
+				</div>
+				{:else}
+				<div class="text-center mb-2">
+					<p class="text-lg font-semibold">Share on:</p>
+				</div>
+				<div class="max-w-md flex flex-col lg:flex-row lg:space-x-2">
+					<IconButton svgUrl="icons/whatsapp.svg" name="WhatsApp" bgColor="bg-[#128c7e]" additionalClasses="text-white flex-1" onClick={captureResponse}/>
+					<IconButton svgUrl="icons/twitter.svg" name="Twitter" bgColor="bg-[#1da1f2]" additionalClasses="text-white flex-1" onClick={captureResponse}/>	
+				</div>
+				{/if}
 			<canvas hidden id="myCanvas" style="background-color:black">
 			</canvas>
 			{/if}
