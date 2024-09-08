@@ -73,6 +73,7 @@ async function playerInfoByGameweek(playerObj: Player, gameweek: number, totalPl
 	return playerInfo;
 }
 
+
 function updatePlayerNamesAndPositions(picks: PlayerPick[], elementsInfo: PlayerElement[]) {
 	// Define position types
 	const positionTypes: { [key: number]: string } = {
@@ -113,6 +114,27 @@ function updatePlayerNamesAndPositions(picks: PlayerPick[], elementsInfo: Player
 	return picks;
 }
 
+async function  getGameweekTransfers(teamId: string, gameweek: number) {
+	const url = `https://fantasy.premierleague.com/api/entry/${teamId}/transfers/`;
+	const response = await fetch(url);
+	const transfers : TransferEntry[] = await response.json();
+	return transfers.filter(item => item.event === gameweek)
+    .map(item => ({
+		element_in: {
+		  id: item.element_in,
+		  multiplier: 1,
+		  is_captain: false,
+		  is_vice_captain: false
+		},
+		element_out: {
+		  id: item.element_out,
+		  multiplier: 1,
+		  is_captain: false,
+		  is_vice_captain: false
+		}
+	  }));
+}
+
 async function getTeamGwPerformance(teamId: string) {
 	// meta data
 	const gameInfo = await getGameInfo();
@@ -151,13 +173,47 @@ async function getTeamGwPerformance(teamId: string) {
 		firstTeamPerformance.push(playerInfo);
 	}
 
+	// get transfers made. 
+	const transferPerformance : TransferEntryPerformance[] = [];
+	const transfers = await getGameweekTransfers(teamId, gameweek);
+
+	const transferPicks = transfers.flatMap(transfer => [
+		{ element: transfer.element_in.id, ...transfer.element_in },
+		{ element: transfer.element_out.id, ...transfer.element_out }
+	]);
+
+	const transfersNamesAndPos = updatePlayerNamesAndPositions(transferPicks, elementsInfo);
+
+
+	for(const transfer of transfers) {
+		const elementInPlayer = transfersNamesAndPos.find(player => player.element === transfer.element_in.id);
+  		const elementOutPlayer = transfersNamesAndPos.find(player => player.element === transfer.element_out.id);
+
+		if (elementInPlayer) {
+			transfer.element_in = { ...elementInPlayer, ...transfer.element_in };
+		}
+  
+  	if (elementOutPlayer) {
+    	transfer.element_out = { ...elementOutPlayer, ...transfer.element_out };
+  	}
+		const playerInInfo = await playerInfoByGameweek(transfer.element_in, gameweek, totalPlayers);
+		const playerOutInfo = await playerInfoByGameweek(transfer.element_out, gameweek, totalPlayers);
+		transferPerformance.push({
+			player_in: playerInInfo,
+			player_out: playerOutInfo
+		});
+		
+	}
+
 	const teamPerformance = {
 		team_name: teamName,
 		total_points: totalPoints,
 		highest_points: highestPoints,
 		average_points: averagePoints,
-		first_team_performance: firstTeamPerformance
+		first_team_performance: firstTeamPerformance,
+		transfers_performance: transferPerformance
 	};
+
 
 	return teamPerformance;
 }

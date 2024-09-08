@@ -118,12 +118,18 @@ type PlayerPerformance = {
     pct_selected_by: string;
 }
 
+type TransferEntryPerformance ={
+    player_in: PlayerPerformance;
+    player_out: PlayerPerformance;
+}
+
 type TeamPerformance = {
     total_points: string;
     highest_points: string;
     average_points: string;
     first_team_performance: PlayerPerformance[];
-}
+    transfers_performance: TransferEntryPerformance[];
+};
 
 type ChipPlay = {
     chip_name: string;
@@ -162,3 +168,13 @@ type GameweekEvent = {
     most_captained: number;
     most_vice_captained: number;
 };
+
+type TransferEntry = {
+    element_in: number;
+    element_in_cost: number;
+    element_out: number;
+    element_out_cost: number;
+    entry: number;
+    event: number;
+    time: string;
+  }
